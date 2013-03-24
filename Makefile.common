@@ -1,0 +1,108 @@
+#
+#   KHelpNdx, parsing library of KwikINF index files
+#   Copyright (C) 2013 by KO Myung-Hun <komh@chollian.net>
+#
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU Lesser General Public License as published by
+#   the Free Software Foundation; either version 2.1 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU Lesser General Public License for more details.
+#
+#   You should have received a copy of the GNU Lesser General Public License
+#   along with this program; if not, write to the Free Software Foundation,
+#   Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+#
+
+##### Common parts that you don't have to modify
+.PHONY : all clean
+
+.SUFFIXES : .exe .dll .a .lib .o .obj .res .c .cpp .h .rc .d
+
+ifdef RELEASE
+LDFLAGS += -s
+else
+LDFLAGS += -Zomf
+endif
+
+ifeq ($(PROGRAM_EXT), .dll)
+LDFLAGS += -Zdll
+endif
+
+ifeq ($(OBJ_EXT), .obj)
+CFLAGS_OMF   = -Zomf
+CXXFLAGS_OMF = -Zomf
+LDFLAGS     += -Zomf
+else
+CFLAGS_OMF   =
+CXXFLAGS_OMF =
+endif
+
+DEPS = $(CSRCS:.c=.d) $(CXXSRCS:.cpp=.d)
+OBJS = $(CSRCS:.c=$(OBJ_EXT)) $(CXXSRCS:.cpp=$(OBJ_EXT))
+
+# default verbose is quiet, that is V=0
+QUIET_  = @
+QUIET_0 = @
+
+QUIET = $(QUIET_$(V))
+
+%.d : %.c
+	$(if $(QUIET), @echo [DEP] $@)
+	$(QUIET)$(CC) $(CFLAGS) $(CFLAGS_OMF) -MM -MP -MT "$(@:.d=$(OBJ_EXT)) $@" -MF $@ $<
+
+%.d : %.cpp
+	$(if $(QUIET), @echo [DEP] $@)
+	$(QUIET)$(CXX) $(CXXFLAGS) $(CXXFLAGS_OMF) -MM -MP -MT "$(@:.d=$(OBJ_EXT)) $@" -MF $@ $<
+
+%$(OBJ_EXT) : %.c
+	$(if $(QUIET),, @echo [CC] $@)
+	$(QUIET)$(CC) $(CFLAGS) $(CFLAGS_OMF) -c -o $@ $<
+
+%$(OBJ_EXT) : %.cpp
+	$(if $(QUIET), @echo [CXX] $@)
+	$(QUIET)$(CXX) $(CXXFLAGS) $(CXXFLAGS_OMF) -c -o $@ $<
+
+%.res : %.rc
+	$(if $(QUIET), @echo [RC] $@)
+	$(QUIET)$(RC) $(RCFLAGS) -r $< $@
+
+all : $(PROGRAM)$(PROGRAM_EXT)
+
+ifndef NO_USE_RC
+PROGRAM_RC  = $(PROGRAM)rc
+
+$(PROGRAM_RC)_DEPS  = $(PROGRAM_RC).rc
+$(PROGRAM_RC)_DEPS += $(PROGRAM_RC).h
+
+$(PROGRAM_RC).res : $($(PROGRAM_RC)_DEPS)
+endif
+
+$(PROGRAM)_DEPS  = $(OBJS)
+ifndef NO_USE_RC
+$(PROGRAM)_DEPS += $(PROGRAM_RC).res
+endif
+ifndef NO_USE_DEF
+$(PROGRAM)_DEPS += $(PROGRAM).def
+endif
+
+$(PROGRAM)$(PROGRAM_EXT) : $($(PROGRAM)_DEPS)
+	$(if $(QUIET), @echo [LD] $@)
+	$(QUIET)$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(if $(QUIET), @echo [STRIP] $@)
+	$(QUIET)$(STRIP) $@
+
+clean :
+	$(RM) *.bak
+	$(RM) $(DEPS)
+	$(RM) $(OBJS)
+	$(RM) $(PROGRAM_RC).res
+	$(RM) $(PROGRAM)$(PROGRAM_EXT)
+
+ifeq ($(filter clean, $(MAKECMDGOALS)),)
+-include $(DEPS)
+endif
+
