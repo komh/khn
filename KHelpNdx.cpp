@@ -24,7 +24,7 @@
 
 #include "KHelpNdx.h"
 
-KHelpNdx::KHelpNdx()
+KHelpNdx::KHelpNdx() : _pkhnfFound( 0 )
 {
     const char *pcszHelpNdx = getenv("HELPNDX");
 
@@ -50,15 +50,28 @@ KHelpNdx::~KHelpNdx()
 {
 }
 
-bool KHelpNdx::Search( string& strCmd, const string& strSearchString,
-                       const string& strExtension ) const
+bool KHelpNdx::Search( const string& strSearchString,
+                       const string& strExtension )
 {
-    for( vector< KHelpNdxFile >::const_iterator it = _vkhnf.begin();
+    for( vector< KHelpNdxFile >::iterator it = _vkhnf.begin();
          it != _vkhnf.end(); ++it )
     {
-        if( it->Search( strCmd, strSearchString, strExtension ))
+        if( it->Search( strSearchString, strExtension ))
+        {
+            _pkhnfFound = &( *it );
+
             return true;
+        }
     }
 
     return false;
 }
+
+int KHelpNdx::Invoke() const
+{
+    if( _pkhnfFound )
+        return _pkhnfFound->Invoke();
+
+    return -1;
+}
+

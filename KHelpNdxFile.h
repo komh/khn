@@ -29,7 +29,9 @@ struct KHelpNdxEntry
 {
     string strKeyWord;
     bool   fPrefix;
-    string strCmd;
+    string strViewer;
+    string strBook;
+    string strTopic;
 };
 
 class KHelpNdxFile
@@ -38,12 +40,15 @@ public :
     KHelpNdxFile( const string& strFilename );
     ~KHelpNdxFile();
 
-    bool Search( string& strCmd, const string& strSearchString,
-                 const string& strExtension = "") const;
+    bool Search( const string& strSearchString,
+                 const string& strExtension = "");
+
+    int Invoke() const;
 
 private :
     vector< string >        _vstrExtensions;
     vector< KHelpNdxEntry > _vkhneEntry;
+    KHelpNdxEntry           _khneFound;
 };
 
 inline size_t findNextNonSep( const string& str, char sep = ' ',
@@ -62,4 +67,11 @@ inline size_t findNextSep( const string& str, char sep = ' ',
     return ( lastPos == string::npos ) ? str.length() : lastPos;
 }
 
+inline size_t findLastSep( const string& str, char sep = ' ',
+                           size_t pos = string::npos )
+{
+    size_t lastPos = str.find_last_of( sep, pos );
+
+    return ( lastPos == string::npos ) ? str.length() : lastPos;
+}
 #endif

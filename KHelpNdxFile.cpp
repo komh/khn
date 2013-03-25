@@ -25,6 +25,8 @@
 #include <vector>
 #include <fstream>
 
+#include <process.h>
+
 #include "KHelpNdxFile.h"
 
 KHelpNdxFile::KHelpNdxFile( const string& strFilename )
@@ -75,16 +77,16 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
             khne.fPrefix    = fPrefix;
 
             pos = findNextNonSep( s, ' ', lastPos + 1 );
+            lastPos = findNextSep( s, ' ', pos + 1 );
+            khne.strViewer = s.substr( pos, lastPos - pos );
 
-            size_t prevPos;
+            pos = findNextNonSep( s, ' ', lastPos + 1 );
+            lastPos = findNextSep( s, ' ', pos + 1 );
+            khne.strBook = s.substr( pos, lastPos - pos );
 
-            for( prevPos = lastPos = pos; lastPos < s.length();
-                 lastPos = findNextSep( s, ')', prevPos + 1 ))
-                prevPos = lastPos;
-
-            lastPos = prevPos;
-
-            khne.strCmd = s.substr( pos, lastPos - pos );
+            pos = findNextNonSep( s, ' ', lastPos + 1 );
+            lastPos = findLastSep( s, ')');
+            khne.strTopic = s.substr( pos, lastPos - pos );
 
             _vkhneEntry.push_back( khne );
         }
@@ -115,12 +117,12 @@ KHelpNdxFile::~KHelpNdxFile()
 {
 }
 
-bool KHelpNdxFile::Search( string& strCmd, const string& strSearchString,
-                           const string& strExtension ) const
+bool KHelpNdxFile::Search( const string& strSearchString,
+                           const string& strExtension )
 {
     bool fFound = false;
 
-    for( vector< KHelpNdxEntry >::const_iterator it = _vkhneEntry.begin();
+    for( vector< KHelpNdxEntry >::iterator it = _vkhneEntry.begin();
          it != _vkhneEntry.end(); ++it )
     {
         if( !it->fPrefix &&
@@ -130,10 +132,11 @@ bool KHelpNdxFile::Search( string& strCmd, const string& strSearchString,
         if( !strSearchString.compare( 0, it->strKeyWord.length(),
                                       it->strKeyWord ))
         {
-            strCmd = it->strCmd;
-            size_t pos = strCmd.find_first_of('~');
+            _khneFound = *it;
+
+            size_t pos = _khneFound.strTopic.find_first_of('~');
             if( pos != string::npos )
-                strCmd.replace( pos, 1, strSearchString );
+                _khneFound.strTopic.replace( pos, 1, strSearchString );
 
             fFound = true;
             break;
@@ -141,4 +144,12 @@ bool KHelpNdxFile::Search( string& strCmd, const string& strSearchString,
     }
 
     return fFound;
+}
+
+int KHelpNdxFile::Invoke() const
+{
+    return spawnlp( P_NOWAIT, _khneFound.strViewer.c_str(),
+                              _khneFound.strViewer.c_str(),
+                              _khneFound.strBook.c_str(),
+                              _khneFound.strTopic.c_str(), 0 );
 }

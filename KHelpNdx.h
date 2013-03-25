@@ -33,10 +33,13 @@ public :
     KHelpNdx();
     ~KHelpNdx();
 
-    bool Search( string& strCmd, const string& strSearchString,
-                 const string& strExtension = "") const;
+    bool Search( const string& strSearchString,
+                 const string& strExtension = "");
+
+    int Invoke() const;
 
 private :
     vector< KHelpNdxFile > _vkhnf;
+    KHelpNdxFile*          _pkhnfFound;
 };
 #endif
