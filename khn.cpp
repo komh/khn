@@ -17,29 +17,51 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <iostream>
+#define INCL_WIN
+#include <os2.h>
 
-#include <string>
+#include <KPMLib.h>
 
-#include "KHelpNdx.h"
+#include "KHNClient.h"
+
+#include "khn.h"
+
+int KHN::Run()
+{
+    KHNClient kclient;
+    kclient.RegisterClass( GetHAB(), WC_KHN, CS_SIZEREDRAW, sizeof( PVOID ));
+
+    ULONG flFrameFlags;
+    flFrameFlags = FCF_SYSMENU | FCF_TITLEBAR | FCF_TASKLIST | FCF_DLGBORDER;
+
+    KFrameWindow kframe;
+    kframe.CreateStdWindow( KWND_DESKTOP,           // parent window handle
+                            0,                      // frame window style
+                            &flFrameFlags,          // window style
+                            KHN_TITLE,              // window title
+                            0,                      // default client style
+                            0,                      // resource in exe file
+                            ID_KHN,                 // frame window id
+                            kclient                 // client window handle
+                          );
+
+    if( kframe.GetHWND())
+    {
+        kframe.SetWindowPos( KWND_TOP, 0, 0, 200, 80,
+                             SWP_MOVE | SWP_SIZE | SWP_SHOW | SWP_ZORDER |
+                             SWP_ACTIVATE );
+
+        KPMApp::Run();
+
+        kframe.DestroyWindow();
+    }
+
+    return 0;
+}
 
 int main( int argc, char *argv[])
 {
+    KHN khn;
 
-    if( argc < 2 )
-    {
-        cerr << "Too few arguments!!!" << endl
-             << argv[ 0 ] << " topic" << endl;
-
-        return 1;
-    }
-
-    KHelpNdx khn;
-
-    string strCmd;
-
-    if( khn.Search( strCmd, argv[ 1 ]))
-        cout << "command : " << strCmd << endl;
-
-    return 0;
+    return khn.Run();
 }

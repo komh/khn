@@ -18,7 +18,7 @@
 #
 
 ##### Common parts that you don't have to modify
-.PHONY : all clean
+.PHONY : all clean $(SUBDIRS)
 
 .SUFFIXES : .exe .dll .a .lib .o .obj .res .c .cpp .h .rc .d
 
@@ -70,7 +70,7 @@ QUIET = $(QUIET_$(V))
 	$(if $(QUIET), @echo [RC] $@)
 	$(QUIET)$(RC) $(RCFLAGS) -r $< $@
 
-all : $(PROGRAM)$(PROGRAM_EXT)
+all : $(SUBDIRS) $(PROGRAM)$(PROGRAM_EXT)
 
 ifndef NO_USE_RC
 PROGRAM_RC  = $(PROGRAM)rc
@@ -95,12 +95,15 @@ $(PROGRAM)$(PROGRAM_EXT) : $($(PROGRAM)_DEPS)
 	$(if $(QUIET), @echo [STRIP] $@)
 	$(QUIET)$(STRIP) $@
 
-clean :
+clean : $(SUBDIRS)
 	$(RM) *.bak
 	$(RM) $(DEPS)
 	$(RM) $(OBJS)
 	$(RM) $(PROGRAM_RC).res
 	$(RM) $(PROGRAM)$(PROGRAM_EXT)
+
+$(SUBDIRS) :
+	$(MAKE) -C $@ RELEASE=$(RELEASE) $(MAKECMDGOALS)
 
 ifeq ($(filter clean, $(MAKECMDGOALS)),)
 -include $(DEPS)

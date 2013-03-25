@@ -19,7 +19,7 @@
 
 ##### Configuration parts that you can modify
 CXX      = g++
-CXXFLAGS = -Wall -DOS2EMX_PLAIN_CHAR=1
+CXXFLAGS = -Wall -DOS2EMX_PLAIN_CHAR=1 -IKPMLib
 LD       = g++
 LDFLAGS  = -Zomf
 LIBS     =
@@ -43,14 +43,20 @@ RM = rm -f
 PROGRAM     = khn
 PROGRAM_EXT = .exe
 
-#define to 1 if you don't use RC file
+# define to 1 if you don't use RC file
 NO_USE_RC  = 1
-#define to 1 if you don't use DEF file
-NO_USE_DEF = 1
+# define to 1 if you don't use DEF file
+#NO_USE_DEF = 1
 
 OBJ_EXT = .o
 
-CXXSRCS = khn.cpp KHelpNdx.cpp KHelpNdxFile.cpp
+CXXSRCS = khn.cpp \
+          KHNClient.cpp \
+          KHelpNdx.cpp \
+          KHelpNdxFile.cpp
+
+SUBDIRS = KPMLib
 
 include Makefile.common
 
+$(PROGRAM)$(PROGRAM_EXT) : KPMLib/KPMLib.a
