@@ -11,8 +11,8 @@
 
 MRESULT KHNClient::OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs )
 {
-    _kef.CreateWindow( this, "", WS_VISIBLE | ES_MARGIN, 0, 0, 0, 0,
-                       this, KWND_TOP, IDEF_SEARCHSTRING );
+    _kef.CreateWindow( this, "", WS_VISIBLE | ES_MARGIN | ES_AUTOSCROLL,
+                       0, 0, 0, 0, this, KWND_TOP, IDEF_SEARCHSTRING );
 
     return 0;
 }
