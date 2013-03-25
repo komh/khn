@@ -61,11 +61,6 @@ MRESULT KHNClient::OnChar( USHORT fsFlags, UCHAR ucRepeat, UCHAR ucScanCode,
         }
         else if( usVk == VK_ESC )
         {
-            //KWindow kwndParent;
-
-            //QueryWindow( QW_PARENT, kwndParent );
-            //kwndParent.SetWindowPos( KWND_TOP, 0, 0, 0, 0, SWP_MINIMIZE );
-
             GetParent().SetWindowPos( KWND_TOP, 0, 0, 0, 0, SWP_MINIMIZE );
 
             KWindow kwndNextTop;
