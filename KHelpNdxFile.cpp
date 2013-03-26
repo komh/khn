@@ -25,9 +25,15 @@
 #include <vector>
 #include <fstream>
 
+#include <cstring>
 #include <process.h>
 
 #include "KHelpNdxFile.h"
+
+inline int strnicmp( const string& str1, const string& str2, size_t count )
+{
+    return ::strnicmp( str1.c_str(), str2.c_str(), count );
+}
 
 KHelpNdxFile::KHelpNdxFile( const string& strFilename )
 {
@@ -90,7 +96,7 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
 
             _vkhneEntry.push_back( khne );
         }
-        else if( !s.compare( 0, 10, "EXTENSIONS"))
+        else if( s.compare( 0, 10, "EXTENSIONS" ))
         {
             pos = findNextNonSep( s, ' ', 10 );
             if( pos != s.length() && s[ pos ] == ':' )
@@ -129,8 +135,8 @@ bool KHelpNdxFile::Search( const string& strSearchString,
             strSearchString.length() != it->strKeyWord.length())
             continue;
 
-        if( !strSearchString.compare( 0, it->strKeyWord.length(),
-                                      it->strKeyWord ))
+        if( !strnicmp( strSearchString, it->strKeyWord,
+                       it->strKeyWord.length()))
         {
             _khneFound = *it;
 
