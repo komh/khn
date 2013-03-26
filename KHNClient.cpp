@@ -132,11 +132,13 @@ void KHNClient::InvokeViewer()
     _kef.QueryWindowText( strSearchString );
 
     if( khn.Search( strSearchString ))
+    {
         khn.Invoke();
+
+        GetParent().SetWindowPos( KWND_TOP, 0, 0, 0, 0, SWP_MINIMIZE );
+    }
     else
         MessageBox("Failed to search a topic in HELPNDX", KHN_TITLE,
                    MB_OK | MB_ERROR );
-
-    GetParent().SetWindowPos( KWND_TOP, 0, 0, 0, 0, SWP_MINIMIZE );
 }
 
