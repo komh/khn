@@ -37,6 +37,19 @@ void KHNClient::CalcClientRect( PRECTL prcl ) const
     prcl->yTop    = h + BORDER_SIZE * 2 + VERT_MARGIN * 2;
 }
 
+MRESULT KHNClient::OnControl( USHORT id, USHORT usNotifyCode,
+                              ULONG ulControlSpec )
+{
+    if( id == IDEF_SEARCHSTRING && usNotifyCode == EN_SETFOCUS )
+    {
+        _kef.SetSel( 0, _kef.QueryWindowTextLength());
+
+        return 0;
+    }
+
+    return KWindow::OnControl( id, usNotifyCode, ulControlSpec );
+}
+
 MRESULT KHNClient::OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs )
 {
     _kef.CreateWindow( this, "", WS_VISIBLE | ES_MARGIN | ES_AUTOSCROLL,

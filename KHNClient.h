@@ -33,6 +33,8 @@ protected :
 
     virtual MRESULT OnChar( USHORT fsFlags, UCHAR ucRepeat, UCHAR ucScanCode,
                             USHORT usCh, USHORT usVk );
+    virtual MRESULT OnControl( USHORT id, USHORT usNotifyCode,
+                               ULONG ulControlSpec );
     virtual MRESULT OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs );
     virtual MRESULT OnDestroy();
     virtual MRESULT OnMove();
