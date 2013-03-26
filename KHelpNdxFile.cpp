@@ -96,7 +96,7 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
 
             _vkhneEntry.push_back( khne );
         }
-        else if( s.compare( 0, 10, "EXTENSIONS" ))
+        else if( s.compare( pos, 10, "EXTENSIONS" ))
         {
             pos = findNextNonSep( s, ' ', 10 );
             if( pos != s.length() && s[ pos ] == ':' )
