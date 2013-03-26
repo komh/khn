@@ -1,6 +1,8 @@
 #ifndef KHN_H
 #define KHN_H
 
+#include "KPMLib.h"
+
 #define ID_KHN 1
 
 #define WC_KHN "KHN CLASS"
