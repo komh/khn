@@ -43,6 +43,7 @@ MRESULT KHNClient::OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs )
                        0, 0, 0, 0, this, KWND_TOP, IDEF_SEARCHSTRING );
 
     _kef.SetTextLimit( 256 );
+
     return 0;
 }
 
