@@ -5,6 +5,8 @@
 
 #include <process.h>
 
+#include "khn.h"
+
 #include "KHelpNdx.h"
 
 #include "KHNClient.h"
@@ -83,6 +85,9 @@ void KHNClient::InvokeViewer()
 
     if( khn.Search( strSearchString ))
         khn.Invoke();
+    else
+        MessageBox("Failed to search a topic in HELPNDX", KHN_TITLE,
+                   MB_OK | MB_ERROR );
 
     GetParent().SetWindowPos( KWND_TOP, 0, 0, 0, 0, SWP_MINIMIZE );
 }
