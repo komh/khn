@@ -11,6 +11,32 @@
 
 #include "KHNClient.h"
 
+#define CHAR_COUNT  25
+
+#define BORDER_SIZE 1
+
+#define HORZ_MARGIN 10
+#define VERT_MARGIN 10
+
+void KHNClient::CalcClientRect( PRECTL prcl ) const
+{
+    KWindowPS kps;
+
+    RECTL rcl = { 0, 0, 100, 100 };
+
+    kps.GetPS( &_kef );
+    kps.DrawText( 1, "H", &rcl, 0, 0, DT_QUERYEXTENT | DT_EXTERNALLEADING );
+    kps.ReleasePS();
+
+    LONG w = rcl.xRight - rcl.xLeft;
+    LONG h = rcl.yTop - rcl.yBottom;
+
+    prcl->xLeft   = 0;
+    prcl->yBottom = 0;
+    prcl->xRight  = w * CHAR_COUNT + BORDER_SIZE * 2 + HORZ_MARGIN * 2;
+    prcl->yTop    = h + BORDER_SIZE * 2 + VERT_MARGIN * 2;
+}
+
 MRESULT KHNClient::OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs )
 {
     _kef.CreateWindow( this, "", WS_VISIBLE | ES_MARGIN | ES_AUTOSCROLL,
@@ -44,7 +70,8 @@ MRESULT KHNClient::OnPaint()
 MRESULT KHNClient::OnSize( SHORT scxOld, SHORT scyOld,
                            SHORT scxNew, SHORT scyNew )
 {
-    _kef.SetWindowPos( KWND_TOP, 10, 10, scxNew - 20, scyNew - 20,
+    _kef.SetWindowPos( KWND_TOP, HORZ_MARGIN, VERT_MARGIN,
+                       scxNew - HORZ_MARGIN * 2, scyNew - VERT_MARGIN * 2,
                        SWP_SIZE | SWP_MOVE | SWP_SHOW );
 
     return 0;

@@ -16,6 +16,8 @@ public :
     KHNClient() {};
     virtual ~KHNClient() {};
 
+    void CalcClientRect( PRECTL prcl ) const;
+
 protected :
     virtual MRESULT KWndProc( ULONG msg, MPARAM mp1, MPARAM mp2 )
     {

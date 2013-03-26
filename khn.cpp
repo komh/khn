@@ -47,7 +47,14 @@ int KHN::Run()
 
     if( kframe.GetHWND())
     {
-        kframe.SetWindowPos( KWND_TOP, 0, 0, 200, 80,
+        RECTL rcl;
+
+        kclient.CalcClientRect( &rcl );
+
+        kframe.CalcFrameRect( &rcl, FALSE );
+
+        kframe.SetWindowPos( KWND_TOP, 0, 0,
+                             rcl.xRight - rcl.xLeft, rcl.yTop - rcl.yBottom,
                              SWP_MOVE | SWP_SIZE | SWP_SHOW | SWP_ZORDER |
                              SWP_ACTIVATE );
 
