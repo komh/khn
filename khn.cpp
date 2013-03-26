@@ -29,7 +29,7 @@
 int KHN::Run()
 {
     KHNClient kclient;
-    kclient.RegisterClass( GetHAB(), WC_KHN, CS_SIZEREDRAW, sizeof( PVOID ));
+    kclient.RegisterClass( GetHAB(), WC_KHN, CS_MOVENOTIFY, sizeof( PVOID ));
 
     ULONG flFrameFlags;
     flFrameFlags = FCF_SYSMENU | FCF_TITLEBAR | FCF_TASKLIST | FCF_DLGBORDER;
@@ -47,16 +47,22 @@ int KHN::Run()
 
     if( kframe.GetHWND())
     {
-        RECTL rcl;
+        if( !kframe.RestoreWindowPos( KHN_TITLE, KHN_POSITION_KEY ))
+        {
+            RECTL rcl;
 
-        kclient.CalcClientRect( &rcl );
+            kclient.CalcClientRect( &rcl );
 
-        kframe.CalcFrameRect( &rcl, FALSE );
+            kframe.CalcFrameRect( &rcl, FALSE );
 
-        kframe.SetWindowPos( KWND_TOP, 0, 0,
-                             rcl.xRight - rcl.xLeft, rcl.yTop - rcl.yBottom,
-                             SWP_MOVE | SWP_SIZE | SWP_SHOW | SWP_ZORDER |
-                             SWP_ACTIVATE );
+            kframe.SetWindowPos( 0, 0, 0,
+                                 rcl.xRight - rcl.xLeft,
+                                 rcl.yTop - rcl.yBottom,
+                                 SWP_MOVE | SWP_SIZE );
+        }
+
+        kframe.SetWindowPos( KWND_TOP, 0, 0, 0, 0,
+                             SWP_SHOW | SWP_ZORDER | SWP_ACTIVATE );
 
         KPMApp::Run();
 

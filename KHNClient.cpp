@@ -53,6 +53,13 @@ MRESULT KHNClient::OnDestroy()
     return 0;
 }
 
+MRESULT KHNClient::OnMove()
+{
+    GetParent().StoreWindowPos( KHN_TITLE, KHN_POSITION_KEY );
+
+    return 0;
+}
+
 MRESULT KHNClient::OnPaint()
 {
     KWindowPS kps;

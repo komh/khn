@@ -35,6 +35,7 @@ protected :
                             USHORT usCh, USHORT usVk );
     virtual MRESULT OnCreate( PVOID pCtrlData, PCREATESTRUCT pcs );
     virtual MRESULT OnDestroy();
+    virtual MRESULT OnMove();
     virtual MRESULT OnPaint();
     virtual MRESULT OnSize( SHORT scxOld, SHORT scyOld,
                             SHORT scxNew, SHORT scyNew );

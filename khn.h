@@ -9,6 +9,8 @@
 
 #define KHN_TITLE  "KHelpNdx"
 
+#define KHN_POSITION_KEY "Position"
+
 #ifdef DEBUG
 #include <cstdio>
 
