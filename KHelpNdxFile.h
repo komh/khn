@@ -51,16 +51,16 @@ private :
     KHelpNdxEntry           _khneFound;
 };
 
-inline size_t findNextNonSep( const string& str, char sep = ' ',
-                              size_t pos = 0 )
+inline size_t findFirstNonSep( const string& str, char sep = ' ',
+                               size_t pos = 0 )
 {
     size_t nextPos = str.find_first_not_of( sep, pos );
 
     return ( nextPos == string::npos ) ? str.length() : nextPos;
 }
 
-inline size_t findNextSep( const string& str, char sep = ' ',
-                           size_t pos = 0 )
+inline size_t findFirstSep( const string& str, char sep = ' ',
+                            size_t pos = 0 )
 {
     size_t lastPos = str.find_first_of( sep, pos );
 

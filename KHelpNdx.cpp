@@ -35,11 +35,11 @@ KHelpNdx::KHelpNdx() : _pkhnfFound( 0 )
 
     size_t lastPos;
 
-    for( size_t pos = findNextNonSep( strHelpNdx, ' ');
+    for( size_t pos = findFirstNonSep( strHelpNdx, ' ');
          pos < strHelpNdx.length();
          pos = lastPos + 1 )
     {
-        lastPos = findNextSep( strHelpNdx, '+', pos );
+        lastPos = findFirstSep( strHelpNdx, '+', pos );
 
         _vkhnf.push_back( KHelpNdxFile( strHelpNdx.substr( pos,
                                                            lastPos - pos )));

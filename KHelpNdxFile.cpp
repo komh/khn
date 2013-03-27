@@ -53,16 +53,16 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
     {
         getline( ifs, s );
 
-        pos = findNextNonSep( s );
+        pos = findFirstNonSep( s );
 
         if( s[ pos ] == '(')
         {
-            lastPos = findNextSep( s, ',');
+            lastPos = findFirstSep( s, ',');
 
             string strKeyWord( s.substr( pos + 1, lastPos - ( pos + 1 )));
             bool   fPrefix = false;
 
-            pos = findNextSep( strKeyWord, '*');
+            pos = findFirstSep( strKeyWord, '*');
             while( pos < strKeyWord.length())
             {
                 if( strKeyWord[ pos + 1 ] == '*')
@@ -74,7 +74,7 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
                     break;
                 }
 
-                pos = findNextSep( strKeyWord, '*', pos + 1 );
+                pos = findFirstSep( strKeyWord, '*', pos + 1 );
             }
 
             KHelpNdxEntry khne;
@@ -82,15 +82,15 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
             khne.strKeyWord = strKeyWord;
             khne.fPrefix    = fPrefix;
 
-            pos = findNextNonSep( s, ' ', lastPos + 1 );
-            lastPos = findNextSep( s, ' ', pos + 1 );
+            pos = findFirstNonSep( s, ' ', lastPos + 1 );
+            lastPos = findFirstSep( s, ' ', pos + 1 );
             khne.strViewer = s.substr( pos, lastPos - pos );
 
-            pos = findNextNonSep( s, ' ', lastPos + 1 );
-            lastPos = findNextSep( s, ' ', pos + 1 );
+            pos = findFirstNonSep( s, ' ', lastPos + 1 );
+            lastPos = findFirstSep( s, ' ', pos + 1 );
             khne.strBook = s.substr( pos, lastPos - pos );
 
-            pos = findNextNonSep( s, ' ', lastPos + 1 );
+            pos = findFirstNonSep( s, ' ', lastPos + 1 );
             lastPos = findLastSep( s, ')');
             khne.strTopic = s.substr( pos, lastPos - pos );
 
@@ -98,16 +98,16 @@ KHelpNdxFile::KHelpNdxFile( const string& strFilename )
         }
         else if( s.compare( pos, 10, "EXTENSIONS" ))
         {
-            pos = findNextNonSep( s, ' ', 10 );
+            pos = findFirstNonSep( s, ' ', 10 );
             if( pos != s.length() && s[ pos ] == ':' )
             {
                 lastPos = pos;
 
                 do
                 {
-                    pos = findNextNonSep( s, ' ', lastPos + 1 );
+                    pos = findFirstNonSep( s, ' ', lastPos + 1 );
 
-                    lastPos = findNextSep( s, ' ', pos );
+                    lastPos = findFirstSep( s, ' ', pos );
 
                     _vstrExtensions.push_back( s.substr( pos,
                                                          lastPos - pos ));
