@@ -36,7 +36,7 @@ int KHN::Run()
 
     KFrameWindow kframe;
     kframe.CreateStdWindow( KWND_DESKTOP,           // parent window handle
-                            0,                      // frame window style
+                            WS_VISIBLE,             // frame window style
                             &flFrameFlags,          // window style
                             KHN_TITLE,              // window title
                             0,                      // default client style
