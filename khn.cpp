@@ -67,6 +67,8 @@ int KHN::Run()
 
         KPMApp::Run();
 
+        kframe.StoreWindowPos( KHN_TITLE, KHN_POSITION_KEY );
+
         kframe.DestroyWindow();
     }
 
