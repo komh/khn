@@ -62,7 +62,8 @@ int KHN::Run()
         }
 
         kframe.SetWindowPos( KWND_TOP, 0, 0, 0, 0,
-                             SWP_SHOW | SWP_ZORDER | SWP_ACTIVATE );
+                             SWP_SHOW | SWP_ZORDER | SWP_ACTIVATE |
+                             SWP_RESTORE );
 
         KPMApp::Run();
 
