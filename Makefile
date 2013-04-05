@@ -1,5 +1,5 @@
 #
-#   KHelpNdx, parsing library of KwikINF index files
+#   khn, invoker the viwer of KwikINF on-line documents
 #   Copyright (C) 2013 by KO Myung-Hun <komh@chollian.net>
 #
 #   This program is free software; you can redistribute it and/or modify it
