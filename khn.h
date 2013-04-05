@@ -3,6 +3,8 @@
 
 #include "KPMLib.h"
 
+#define KHN_VERSION "1.0.0"
+
 #define ID_KHN 1
 
 #define WC_KHN "KHN CLASS"
