@@ -1,0 +1,124 @@
+                               KHelpNdx v1.0.0
+                              -----------------
+                            
+1. Introduction
+---------------
+  
+  This program is a invoker of a viewer of online books like KwikINF of OS/2 
+toolkit. This programs was made because KwikINF does not process a user 
+defined NDX file.
+
+2. Development Environment
+--------------------------
+  
+  - OS/2 Warp v4 for Korean with FixPak #15
+  
+  - GCC v3.3.5
+  
+  - OS/2 ToolKit v4.5
+  
+  - GNU Make v3.81r3
+  
+  - rm v3.13
+  
+  - lxlite v1.3.3
+  
+  - git v1.7.3.2 
+      
+3. Requirements
+---------------
+
+  - Runtime : kLIBC v0.6.5
+
+4. Test Environment
+--------------------
+
+  This program is tested on OS/2 Warp v4 for Korean with FixPak #15 and
+eComStation 2.1.
+
+5. Installation
+---------------
+
+  Put khn.exe into any directory.
+  
+6. Usage
+--------
+
+  If you launch khn.exe, a small window appears. If you enter a keyword in the 
+entry field, a online book contains the keyword is opened.
+  Pressing ESC causes KHelpNdx window disappear.
+  
+7. Limitations/Known bugs
+-----------------------------
+
+  - A system hotkey is not supported
+    Instead, you can use Win95key v3.09 to assign a system hotkey to KHelpNdx. 
+    (http://hobbes.nmsu.edu/download/pub/os2/util/keyboard/win95key_v309.zip)
+    
+  - A context help is not supported
+  
+8. TODOs...
+-----------
+
+  - Support a system hotkey in KHelpNdx itself
+    
+  - Support a context help
+  
+9. History
+----------
+
+  - v1.0.0 ( 2013/04/05 )
+    .First public release
+          
+10. Compilation
+---------------
+
+10.1 Requirements...
+--------------------
+
+  - gcc v3.3.5
+  
+  - OS/2 ToolKit v4.5
+  
+  - GNU Make v3.81r3
+  
+10.2 How to compile
+-------------------
+  
+  Extract src.zip into any directory, then execute the following.
+
+      make
+
+10.3 Download the latest sources
+--------------------------------
+
+  The following git repository is provided,
+  
+      git://github.com/komh/khn.git
+      
+  To download the sources, do like below.
+    
+      git clone git://github.com/komh/khn.git
+  
+11. Modules
+-----------
+
+  kscp.exe : The executable of KHelpNdx
+
+12. Donation
+------------
+
+  If you are satisfied with this program and want to donate to me, please visit
+the following URL.
+
+    http://www.ecomstation.co.kr/komh/donate.html
+
+13. Contacts
+------------
+
+  e-mail : komh@chollian.net
+  ICQ    : 124861818
+  MSN    : komh@chollian.net
+  IRC    : lvzuufx, #os2 at HANIRC(irc.hanirc.org)
+               
+KO Myung-Hun
