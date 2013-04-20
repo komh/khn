@@ -40,6 +40,6 @@ public :
 
 private :
     vector< KHelpNdxFile > _vkhnf;
-    KHelpNdxFile*          _pkhnfFound;
+    VKHNE                  _vkhneFound;
 };
 #endif

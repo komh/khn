@@ -21,10 +21,11 @@
 #include <vector>
 
 #include <cstdlib>
+#include <process.h>
 
 #include "KHelpNdx.h"
 
-KHelpNdx::KHelpNdx() : _pkhnfFound( 0 )
+KHelpNdx::KHelpNdx()
 {
     const char *pcszHelpNdx = getenv("HELPNDX");
 
@@ -53,24 +54,40 @@ KHelpNdx::~KHelpNdx()
 bool KHelpNdx::Search( const string& strSearchString,
                        const string& strExtension )
 {
+    bool fFound = false;
+
+    _vkhneFound.clear();
+
     for( vector< KHelpNdxFile >::iterator it = _vkhnf.begin();
          it != _vkhnf.end(); ++it )
     {
-        if( it->Search( strSearchString, strExtension ))
-        {
-            _pkhnfFound = &( *it );
-
-            return true;
-        }
+        if( it->Search( _vkhneFound, strSearchString, strExtension ))
+            fFound = true;
     }
 
-    return false;
+    return fFound;
 }
 
 int KHelpNdx::Invoke() const
 {
-    if( _pkhnfFound )
-        return _pkhnfFound->Invoke();
+    if( !_vkhneFound.empty())
+    {
+        // default is the first found entry
+        KHelpNdxEntry khne( _vkhneFound[ 0 ]);
+
+        // show the exactly matched entry if it is there
+        for( VKHNE::const_iterator it = _vkhneFound.begin();
+             it != _vkhneFound.end(); ++it )
+        {
+            if( !it->fPrefix )
+                khne = *it;
+        }
+
+        return spawnlp( P_NOWAIT, khne.strViewer.c_str(),
+                                  khne.strViewer.c_str(),
+                                  khne.strBook.c_str(),
+                                  khne.strTopic.c_str(), 0 );
+    }
 
     return -1;
 }

@@ -25,6 +25,8 @@
 
 using namespace std;
 
+typedef vector< string > VSTR;
+
 struct KHelpNdxEntry
 {
     string strKeyWord;
@@ -32,7 +34,10 @@ struct KHelpNdxEntry
     string strViewer;
     string strBook;
     string strTopic;
+    VSTR   vstrExtensions;
 };
+
+typedef vector< KHelpNdxEntry > VKHNE;
 
 class KHelpNdxFile
 {
@@ -40,15 +45,13 @@ public :
     KHelpNdxFile( const string& strFilename );
     ~KHelpNdxFile();
 
-    bool Search( const string& strSearchString,
-                 const string& strExtension = "");
-
-    int Invoke() const;
+    bool Search( VKHNE& vkhneFound,
+                 const string& strSearchString,
+                 const string& strExtension = "") const;
 
 private :
-    vector< string >        _vstrExtensions;
-    vector< KHelpNdxEntry > _vkhneEntry;
-    KHelpNdxEntry           _khneFound;
+    VSTR  _vstrExtensions;
+    VKHNE _vkhneEntry;
 };
 
 inline size_t findFirstNonSep( const string& str, char sep = ' ',

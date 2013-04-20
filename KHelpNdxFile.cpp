@@ -26,7 +26,6 @@
 #include <fstream>
 
 #include <cstring>
-#include <process.h>
 
 #include "KHelpNdxFile.h"
 
@@ -123,12 +122,13 @@ KHelpNdxFile::~KHelpNdxFile()
 {
 }
 
-bool KHelpNdxFile::Search( const string& strSearchString,
-                           const string& strExtension )
+bool KHelpNdxFile::Search( VKHNE& vkhneFound,
+                           const string& strSearchString,
+                           const string& strExtension ) const
 {
     bool fFound = false;
 
-    for( vector< KHelpNdxEntry >::iterator it = _vkhneEntry.begin();
+    for( vector< KHelpNdxEntry >::const_iterator it = _vkhneEntry.begin();
          it != _vkhneEntry.end(); ++it )
     {
         if( !it->fPrefix &&
@@ -138,24 +138,20 @@ bool KHelpNdxFile::Search( const string& strSearchString,
         if( !strnicmp( strSearchString, it->strKeyWord,
                        it->strKeyWord.length()))
         {
-            _khneFound = *it;
+            KHelpNdxEntry khneFound( *it );
 
-            size_t pos = _khneFound.strTopic.find_first_of('~');
+            size_t pos = khneFound.strTopic.find_first_of('~');
             if( pos != string::npos )
-                _khneFound.strTopic.replace( pos, 1, strSearchString );
+                khneFound.strTopic.replace( pos, 1, strSearchString );
+
+            khneFound.vstrExtensions = _vstrExtensions;
+
+            vkhneFound.push_back( khneFound );
 
             fFound = true;
-            break;
         }
     }
 
     return fFound;
 }
 
-int KHelpNdxFile::Invoke() const
-{
-    return spawnlp( P_NOWAIT, _khneFound.strViewer.c_str(),
-                              _khneFound.strViewer.c_str(),
-                              _khneFound.strBook.c_str(),
-                              _khneFound.strTopic.c_str(), 0 );
-}
