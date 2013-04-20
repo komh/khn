@@ -146,7 +146,6 @@ void KHNClient::InvokeViewer()
 {
     KHelpNdx khn;
     string strSearchString;
-    string strCmd;
 
     _kef.QueryWindowText( strSearchString );
 
