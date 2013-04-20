@@ -73,20 +73,20 @@ int KHelpNdx::Invoke() const
     if( !_vkhneFound.empty())
     {
         // default is the first found entry
-        KHelpNdxEntry khne( _vkhneFound[ 0 ]);
+        const KHelpNdxEntry *pkhne = &_vkhneFound[ 0 ];
 
         // show the exactly matched entry if it is there
         for( VKHNE::const_iterator it = _vkhneFound.begin();
              it != _vkhneFound.end(); ++it )
         {
             if( !it->fPrefix )
-                khne = *it;
+                pkhne = &( *it );
         }
 
-        return spawnlp( P_NOWAIT, khne.strViewer.c_str(),
-                                  khne.strViewer.c_str(),
-                                  khne.strBook.c_str(),
-                                  khne.strTopic.c_str(), 0 );
+        return spawnlp( P_NOWAIT, pkhne->strViewer.c_str(),
+                                  pkhne->strViewer.c_str(),
+                                  pkhne->strBook.c_str(),
+                                  pkhne->strTopic.c_str(), 0 );
     }
 
     return -1;
