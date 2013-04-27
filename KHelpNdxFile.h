@@ -35,6 +35,7 @@ struct KHelpNdxEntry
     string strBook;
     string strTopic;
     VSTR   vstrExtensions;
+    bool   fCaseMatch;
 };
 
 typedef vector< KHelpNdxEntry > VKHNE;

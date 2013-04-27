@@ -80,7 +80,13 @@ int KHelpNdx::Invoke() const
              it != _vkhneFound.end(); ++it )
         {
             if( !it->fPrefix )
+            {
                 pkhne = &( *it );
+
+                // show the case-sensitively matched entry first
+                if( it->fCaseMatch )
+                    break;
+            }
         }
 
         return spawnlp( P_NOWAIT, pkhne->strViewer.c_str(),
