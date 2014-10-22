@@ -1,62 +1,128 @@
 #
-#   khn, invoker the viwer of KwikINF on-line documents
-#   Copyright (C) 2013 by KO Myung-Hun <komh@chollian.net>
+#   Configuration parts of GNU Make/GCC build system.
+#   Copyright (C) 2014 by KO Myung-Hun <komh@chollian.net>
 #
-#   This program is free software; you can redistribute it and/or modify it
-#   under the terms of the GNU Lesser General Public License as published by
-#   the Free Software Foundation; either version 2.1 of the License, or
-#   (at your option) any later version.
+#   This file is part of GNU Make/GCC build system.
 #
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#   GNU Lesser General Public License for more details.
-#
-#   You should have received a copy of the GNU Lesser General Public License
-#   along with this program; if not, write to the Free Software Foundation,
-#   Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+#   This program is free software. It comes without any warranty, to
+#   the extent permitted by applicable law. You can redistribute it
+#   and/or modify it under the terms of the Do What The Fuck You Want
+#   To Public License, Version 2, as published by Sam Hocevar. See
+#   http://www.wtfpl.net/ for more details.
 #
 
 ##### Configuration parts that you can modify
-CXX      = g++
-CXXFLAGS = -Wall -DOS2EMX_PLAIN_CHAR=1 -IKPMLib
-LD       = g++
-LDFLAGS  = -Zomf
-LIBS     =
+
+# specify sub directories
+SUBDIRS := KPMLib
+
+# specify gcc compiler flags for all the programs
+CFLAGS :=
+
+# specify g++ compiler flags for all the programs
+CXXFLAGS := -Wall -DOS2EMX_PLAIN_CHAR=1
+
+# specify linker flags such as -L option for all the programs
+LDFLAGS :=
+
+# specify dependent libraries such as -l option for all the programs
+LDLIBS :=
 
 ifdef RELEASE
-CFLAGS   += -O3
+# specify flags for release mode
+CFLAGS   +=
 CXXFLAGS += -O3
-STRIP     = lxlite /B- /L- /CS
+LDFLAGS  +=
 else
-CFLAGS   += -O0 -g -DDEBUG
+# specify flags for debug mode
+CFLAGS   +=
 CXXFLAGS += -O0 -g -DDEBUG
 LDFLAGS  += -g
-STRIP     = echo
 endif
 
-RC      = rc
-RCFLAGS = -n
+# specify resource compiler, default is rc if not set
+RC :=
 
-RM = rm -f
+# specify resource compiler flags
+RCFLAGS :=
 
-PROGRAM     = khn
-PROGRAM_EXT = .exe
+# 1. specify a list of programs without an extension with
+#
+#   BIN_PROGRAMS
+#
+# Now, assume
+#
+#   BIN_PROGRAMS := program
+#
+# 2. specify sources for a specific program with
+#
+#   program_SRCS
+#
+# the above is REQUIRED
+#
+# 3. specify various OPTIONAL flags for a specific program with
+#
+#   program_CFLAGS      for gcc compiler flags
+#   program_CXXFLAGS    for g++ compiler flags
+#   program_LDFLAGS     for linker flags
+#   program_LDLIBS      for dependent libraries
+#   program_RCSRC       for rc source
+#   program_RCFLAGS     for rc flags
+#   program_DEF         for .def file
+#   program_EXTRADEPS   for extra dependencies
 
-# define to 1 if you don't use RC file
-NO_USE_RC  = 1
-# define to 1 if you don't use DEF file
-#NO_USE_DEF = 1
+BIN_PROGRAMS := khn
 
-OBJ_EXT = .o
+khn_SRCS := khn.cpp \
+            KHNClient.cpp \
+            KHelpNdx.cpp \
+            KHelpNdxFile.cpp
 
-CXXSRCS = khn.cpp \
-          KHNClient.cpp \
-          KHelpNdx.cpp \
-          KHelpNdxFile.cpp
+khn_CXXFLAGS  := -IKPMLib
+khn_LDLIBS    := KPMLib/KPMLib.a
+khn_DEF       := khn.def
+khn_EXTRADEPS := KPMLib/KPMLib.a
 
-SUBDIRS = KPMLib
+# 1. specify a list of libraries without an extension with
+#
+#   BIN_LIBRARIES
+#
+# Now, assume
+#
+#   BIN_PROGRAMS := library
+#
+# 2. specify sources for a specific library with
+#
+#   library_SRCS
+#
+# the above is REQUIRED
+#
+# 3. set library type flags for a specific library to a non-empty value
+#
+#   library_LIB         to create a static library
+#   library_DLL         to build a DLL
+#
+# either of the above SHOULD be SET
+#
+# 4. specify various OPTIONAL flags for a specific library with
+#
+#   library_CFLAGS      for gcc compiler flags
+#   library_CXXFLAGS    for g++ compiler flags
+#
+# the above is common for LIB and DLL
+#
+#   library_DLLNAME     for customized DLL name without an extension
+#   library_LDFLAGS     for linker flags
+#   library_LDLIBS      for dependent libraries
+#   library_RCSRC       for rc source
+#   library_RCFLAGS     for rc flags
+#   library_DEF         for .def file, if not set all the symbols are exported
+#   library_EXTRADEPS   for extra dependencies
+#
+# the above is only for DLL
+
+BIN_LIBRARIES :=
 
 include Makefile.common
 
-$(PROGRAM)$(PROGRAM_EXT) : KPMLib/KPMLib.a
+# additional stuffs
