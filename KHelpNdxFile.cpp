@@ -29,6 +29,8 @@
 
 #include "KHelpNdxFile.h"
 
+using namespace std;
+
 inline int strnicmp( const string& str1, const string& str2, size_t count )
 {
     return ::strnicmp( str1.c_str(), str2.c_str(), count );
@@ -147,7 +149,7 @@ bool KHelpNdxFile::Search( VKHNE& vkhneFound,
             khneFound.vstrExtensions = _vstrExtensions;
 
             khneFound.fCaseMatch = !strSearchString.compare( it->strKeyWord );
-            
+
             vkhneFound.push_back( khneFound );
 
             fFound = true;

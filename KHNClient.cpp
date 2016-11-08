@@ -30,6 +30,8 @@
 
 #include "KHNClient.h"
 
+using namespace std;
+
 #define CHAR_COUNT  25
 
 #define BORDER_SIZE 1

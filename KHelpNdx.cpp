@@ -25,6 +25,8 @@
 
 #include "KHelpNdx.h"
 
+using namespace std;
+
 KHelpNdx::KHelpNdx()
 {
     const char *pcszHelpNdx = getenv("HELPNDX");

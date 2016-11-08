@@ -23,59 +23,57 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
-typedef vector< string > VSTR;
+typedef std::vector< std::string > VSTR;
 
 struct KHelpNdxEntry
 {
-    string strKeyWord;
-    bool   fPrefix;
-    string strViewer;
-    string strBook;
-    string strTopic;
-    VSTR   vstrExtensions;
-    bool   fCaseMatch;
+    std::string strKeyWord;
+    bool        fPrefix;
+    std::string strViewer;
+    std::string strBook;
+    std::string strTopic;
+    VSTR        vstrExtensions;
+    bool        fCaseMatch;
 };
 
-typedef vector< KHelpNdxEntry > VKHNE;
+typedef std::vector< KHelpNdxEntry > VKHNE;
 
 class KHelpNdxFile
 {
 public :
-    KHelpNdxFile( const string& strFilename );
+    KHelpNdxFile( const std::string& strFilename );
     ~KHelpNdxFile();
 
     bool Search( VKHNE& vkhneFound,
-                 const string& strSearchString,
-                 const string& strExtension = "") const;
+                 const std::string& strSearchString,
+                 const std::string& strExtension = "") const;
 
 private :
     VSTR  _vstrExtensions;
     VKHNE _vkhneEntry;
 };
 
-inline size_t findFirstNonSep( const string& str, char sep = ' ',
+inline size_t findFirstNonSep( const std::string& str, char sep = ' ',
                                size_t pos = 0 )
 {
     size_t nextPos = str.find_first_not_of( sep, pos );
 
-    return ( nextPos == string::npos ) ? str.length() : nextPos;
+    return ( nextPos == std::string::npos ) ? str.length() : nextPos;
 }
 
-inline size_t findFirstSep( const string& str, char sep = ' ',
+inline size_t findFirstSep( const std::string& str, char sep = ' ',
                             size_t pos = 0 )
 {
     size_t lastPos = str.find_first_of( sep, pos );
 
-    return ( lastPos == string::npos ) ? str.length() : lastPos;
+    return ( lastPos == std::string::npos ) ? str.length() : lastPos;
 }
 
-inline size_t findLastSep( const string& str, char sep = ' ',
-                           size_t pos = string::npos )
+inline size_t findLastSep( const std::string& str, char sep = ' ',
+                           size_t pos = std::string::npos )
 {
     size_t lastPos = str.find_last_of( sep, pos );
 
-    return ( lastPos == string::npos ) ? str.length() : lastPos;
+    return ( lastPos == std::string::npos ) ? str.length() : lastPos;
 }
 #endif

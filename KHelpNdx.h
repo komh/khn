@@ -25,21 +25,19 @@
 
 #include "KHelpNdxFile.h"
 
-using namespace std;
-
 class KHelpNdx
 {
 public :
     KHelpNdx();
     ~KHelpNdx();
 
-    bool Search( const string& strSearchString,
-                 const string& strExtension = "");
+    bool Search( const std::string& strSearchString,
+                 const std::string& strExtension = "");
 
     int Invoke() const;
 
 private :
-    vector< KHelpNdxFile > _vkhnf;
-    VKHNE                  _vkhneFound;
+    std::vector< KHelpNdxFile > _vkhnf;
+    VKHNE                       _vkhneFound;
 };
 #endif
