@@ -148,7 +148,9 @@ bool KHelpNdxFile::Search( VKHNE& vkhneFound,
 
             khneFound.vstrExtensions = _vstrExtensions;
 
-            khneFound.fCaseMatch = !strSearchString.compare( it->strKeyWord );
+            khneFound.fCaseMatch =
+                !strSearchString.compare( 0, it->strKeyWord.length(),
+                                          it->strKeyWord );
 
             vkhneFound.push_back( khneFound );
 

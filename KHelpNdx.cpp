@@ -74,8 +74,13 @@ int KHelpNdx::Invoke() const
 {
     if( !_vkhneFound.empty())
     {
-        // default is the first found entry
-        const KHelpNdxEntry *pkhne = &_vkhneFound[ 0 ];
+        const KHelpNdxEntry *pkhne = 0;
+
+        enum MatchLevel { MatchNone, MatchLonger, MatchLongerCase,
+                          MatchExact, MatchExactCase };
+        MatchLevel matchLevel = MatchNone;
+
+        int prefixLen = -1;
 
         // show the exactly matched entry if it is there
         for( VKHNE::const_iterator it = _vkhneFound.begin();
@@ -83,11 +88,42 @@ int KHelpNdx::Invoke() const
         {
             if( !it->fPrefix )
             {
-                pkhne = &( *it );
-
                 // show the case-sensitively matched entry first
                 if( it->fCaseMatch )
+                {
+                    pkhne = &( *it );
+
                     break;
+                }
+
+                // show the first appearing case-insensitively matched entry
+                if( matchLevel < MatchExact )
+                {
+                    matchLevel = MatchExact;
+
+                    pkhne = &( *it );
+                }
+            }
+            else if( matchLevel < MatchExact )
+            {
+                int len = it->strKeyWord.length();
+
+                if( it->fCaseMatch &&
+                    ( matchLevel < MatchLongerCase || len > prefixLen ))
+                {
+                    matchLevel = MatchLongerCase;
+
+                    prefixLen = len;
+                    pkhne = &( *it );
+                }
+                else if( matchLevel < MatchLongerCase &&
+                         len > prefixLen )
+                {
+                    matchLevel = MatchLonger;
+
+                    prefixLen = len;
+                    pkhne = &( *it );
+                }
             }
         }
 
